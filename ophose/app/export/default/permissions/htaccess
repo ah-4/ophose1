@@ -1,0 +1,40 @@
+RewriteEngine On
+
+RewriteCond %{REQUEST_URI} !^\.*$
+RewriteCond % !-f
+RewriteCond % !-d
+
+RewriteRule ^([\w\/\@]+)?$ ophose/ophose_request.php?request=$1&%{QUERY_STRING}
+
+# Better links
+RewriteRule ^\.ophose\/r\/(.*)\/e\/(.*)$ ophose/app/rest/env/env.php?env=$1&request=$2&%{QUERY_STRING} [L] # Environment REST API
+RewriteRule ^\.ophose\/_js/(.*)$ build/ophose/source/$1 [L] # Built javascript files
+RewriteRule ^\.ophose\/d/(.*)$ ophose/app/dependencies/$1 [L] # Dependencies (jquery.js, etc.)
+
+RewriteRule ^\.ophose\/_envjs\/(.*)$ env/$1/env_init.js [L,QSA] # Environment initialization script (env_init.js)
+RewriteRule ^\.ophose\/_envjsc\/(.*)\/c\/(.*)$ env/$1/components/$2.js [L] # Environment initialization script (env_init.js)
+
+# Disable .oconf|.local|.htaccess files public access
+RewriteRule ^(.*)\.(oconf|local|htaccess)$ ophose/ophose_request.php?request=%{REQUEST_URI}&%{QUERY_STRING} [L]
+
+# Disable access to private folders
+RewriteRule ^(private)\/(.*)$ ophose/ophose_request.php?request=%{REQUEST_URI}&%{QUERY_STRING} [L]
+
+# Disable access to env|build but JS files
+RewriteRule ^(env|build)\/(?!.*\.js$).*$ ophose/ophose_request.php?request=%{REQUEST_URI}&%{QUERY_STRING} [L]
+
+# Disable access to ophose but JS and PHP files
+RewriteRule ^(ophose)\/(?!.*\.(js|php)$).*$ ophose/ophose_request.php?request=%{REQUEST_URI}&%{QUERY_STRING} [L]
+
+# Disable special files access
+RewriteRule ^\.gitignore$ ophose/ophose_request.php?request=%{REQUEST_URI}&%{QUERY_STRING} [L]
+RewriteRule ^ocl.py$ ophose/ophose_request.php?request=%{REQUEST_URI}&%{QUERY_STRING} [L]
+RewriteRule ^README.md$ ophose/ophose_request.php?request=%{REQUEST_URI}&%{QUERY_STRING} [L]
+
+
+# Redirect to robots.txt
+RewriteRule ^robots\.txt$ ophose/app/config/robots.txt [L]
+
+{force_https_redirect}
+
+ErrorDocument 404 /error
