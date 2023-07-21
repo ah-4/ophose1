@@ -1,6 +1,4 @@
 /backup/
 /build/
 .oconf.local
-/.htaccess
 /private/
-/project.oconf

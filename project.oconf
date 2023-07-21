@@ -1,0 +1,10 @@
+{
+    "name": "Your project name",
+    "production_mode": false,
+    "api_key": "",
+    "build": {
+        "redirect": {
+            "force_https_redirect": false
+        }
+    }
+}
