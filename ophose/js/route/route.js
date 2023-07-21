@@ -7,7 +7,6 @@ class OphoseRoute {
      * @param {page} requestUrl requested URL
      */
     static go(requestUrl, urlQueries = null) {
-        if(!requestUrl.startsWith('/')) requestUrl = '/' + requestUrl;
         if (requestUrl === undefined || requestUrl === null) {
             return;
         }
@@ -15,6 +14,7 @@ class OphoseRoute {
             window.location = requestUrl;
             return;
         }
+        if(!requestUrl.startsWith('/')) requestUrl = '/' + requestUrl;
         OphoseApp.__loadAt(requestUrl, urlQueries);
         if (requestUrl != OphoseApp.__currentURL) {
             window.history.pushState(requestUrl, '', requestUrl);
